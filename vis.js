@@ -28,11 +28,16 @@ var mentat = {
 	maxFont : 3,
 	minFont : 0.5,
 	numOfDecimals: 3,
+	increment: 0.1,
 	/*The font size algorithm may well change, so we'll make
 	 sure it's abstracted from the rest of the code in its own function */
 	getFontSize : function (weight) {
 		return weight * this.maxFont;
 	},
+	/*
+	* The render methods are great for a quick-n-'just works' implementation but for a larger project
+	* it would be better to use a templating library and keep HTML out of the JS. 
+	*/
 	renderCloud : function () {
 		var html = "";
 		for(word in this.words) {
@@ -51,27 +56,65 @@ var mentat = {
 		return html += "</table>";
 	},
 	reduceWeight: function (word) {
-		this.words[word] = this.words[word] - 0.1;
+		this.words[word] = this.words[word] - this.increment;
 		if (this.words[word] < 0) {
 			this.words[word] = 0;
 		}
 	},
+	increaseWeight: function (word) {
+		this.words[word] = this.words[word] + this.increment;
+	},
 	setEventListeners : function () {
 		var cloud = document.getElementById('tagCloud'),
 		self = this;
+
+		//left click
 		cloud.addEventListener('click', function (e) {
-			//update weight
-			if(e.target.tagName.toUpperCase() === 'SPAN') {
-				self.reduceWeight(e.target.innerHTML);
+			if(self.isValidTagElement(e)) {
+				if(!self.isRightClick(e)) {
+					self.increaseWeight(e.target.innerHTML);
+				}
 			}
-			//re-render
 			self.update();
 		});
+
+		//right click. Prevents normal right click functions, but only on the tagcloud.
+		cloud.addEventListener('contextmenu', function (e) {
+			if(self.isValidTagElement(e)) {
+				self.reduceWeight(e.target.innerHTML);
+			}
+			self.update();
+			e.preventDefault();
+		});
 	},
+	/*
+	* Thanks, SO!
+	* http://stackoverflow.com/questions/2405771/is-right-click-a-javascript-event
+	*/
+	isRightClick : function (e) {
+   		if ("which" in e) {  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+        	isRightMB = e.which == 3; 
+    	} else if ("button" in e) { // IE, Opera 
+        	isRightMB = e.button == 2; 	
+    	}	
+	},
+	/*
+	* Prevent click events from triggering on inappropriate elements
+	*/
+	isValidTagElement : function(e) {
+		return 	(e.target.tagName.toUpperCase() === 'SPAN');
+	},
+	/*
+	* This is the one to call to make everything happen.
+	*/
 	init : function () {
 		this.update();
 		this.setEventListeners();
 	},
+	/*
+	* This is suitable for small sets of data, but give that it re-renders everything,
+	* we would need to implement a specific element update for displaying large datasets
+	*/
 	update : function () {
 		document.getElementById('tagCloud').innerHTML = this.renderCloud();
 		document.getElementById('tagTable').innerHTML = this.renderTable();		
