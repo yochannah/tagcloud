@@ -61,7 +61,9 @@ var mentat = {
 		self = this;
 		cloud.addEventListener('click', function (e) {
 			//update weight
-			self.reduceWeight(e.target.innerHTML);
+			if(e.target.tagName.toUpperCase() === 'SPAN') {
+				self.reduceWeight(e.target.innerHTML);
+			}
 			//re-render
 			self.update();
 		});
