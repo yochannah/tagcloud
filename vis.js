@@ -22,17 +22,34 @@ var mentat = {
 		"region": 0.321
 	},
 	/*
+	* User-editable settings here. Feel free to play.
+	*/
+	baseFont : 3,
+	numOfDecimals: 3,
+	increment: 0.1,
+	/*
+	* This is the one to call to make everything happen. Please don't edit below here
+	* unless you know what you're doing! :)
+	*/
+	init : function () {
+		this.update();
+		this.setEventListeners();
+	},
+	/*
+	* This is suitable for small sets of data, but give that it re-renders everything,
+	* we would need to implement a specific element update for displaying large datasets
+	*/
+	update : function () {
+		document.getElementById('tagCloud').innerHTML = this.renderCloud();
+		document.getElementById('tagTable').innerHTML = this.renderTable();		
+	},	
+	/*The font size algorithm may well change, so we'll make
+	* sure it's abstracted from the rest of the code in its own function.
 	* We may want to build different weight visualisation algorithms in the future
 	* but for now we'll go quick and easy.
 	*/
-	maxFont : 3,
-	minFont : 0.5,
-	numOfDecimals: 3,
-	increment: 0.1,
-	/*The font size algorithm may well change, so we'll make
-	 sure it's abstracted from the rest of the code in its own function */
 	getFontSize : function (weight) {
-		return weight * this.maxFont;
+		return weight * this.baseFont;
 	},
 	/*
 	* The render methods are great for a quick-n-'just works' implementation but for a larger project
@@ -103,20 +120,5 @@ var mentat = {
 	*/
 	isValidTagElement : function(e) {
 		return 	(e.target.tagName.toUpperCase() === 'SPAN');
-	},
-	/*
-	* This is the one to call to make everything happen.
-	*/
-	init : function () {
-		this.update();
-		this.setEventListeners();
-	},
-	/*
-	* This is suitable for small sets of data, but give that it re-renders everything,
-	* we would need to implement a specific element update for displaying large datasets
-	*/
-	update : function () {
-		document.getElementById('tagCloud').innerHTML = this.renderCloud();
-		document.getElementById('tagTable').innerHTML = this.renderTable();		
 	}
 };
