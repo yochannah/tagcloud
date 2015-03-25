@@ -1,0 +1,14 @@
+body {
+	font-family:georgia;
+}
+
+.tagCloud {
+	width:300px;
+	background-color:wheat;
+}
+
+.tagCloud span {
+ padding: 0.1em;
+ margin:0.2em; display:inline-block;
+}
+
