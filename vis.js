@@ -27,6 +27,7 @@ var mentat = {
 	*/
 	maxFont : 3,
 	minFont : 0.5,
+	numOfDecimals: 3,
 	/*The font size algorithm may well change, so we'll make
 	 sure it's abstracted from the rest of the code in its own function */
 	getFontSize : function (weight) {
@@ -45,7 +46,7 @@ var mentat = {
 		var html = "<table>",
 		weight;
 		for(word in this.words) {
-				html+= '<tr><td>' + word + '</td><td>' + this.words[word].toFixed(3) + '</td></tr>';
+				html+= '<tr><td>' + word + '</td><td>' + this.words[word].toFixed(this.numOfDecimals) + '</td></tr>';
 		}
 		return html += "</table>";
 	},
