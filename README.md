@@ -3,6 +3,8 @@ basic tag cloud with weight-reduction functionality when tags are clicked (tags 
 
 Interview task I was asked to complete in 2015. 
 
+Live demo: https://jsfiddle.net/yochannah/cmL6gw5j/ 
+
 I intentionally haven't included a licence - I like to share this as an example of the type of simple task that is good for coder interviews, but the task itself was written by someone else so I can't give permission to re-use it. 
 
 ## Original brief (sans the .csv file:)
